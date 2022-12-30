@@ -1,23 +1,47 @@
-import logo from './logo.svg';
 import './App.css';
+import db from './firebase/config';
+import { collection, getDocs ,addDoc , doc ,deleteDoc } from "firebase/firestore";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={async()=>{
+
+          const data = await getDocs(collection(db, "products"));
+          data.forEach((obj) => {
+            console.log(obj.data(),obj.id);
+          });
+
+      }}>Read</button>
+
+
+
+      <button onClick={async()=>{
+          try {
+            await addDoc(collection(db, "products"), {
+              name: "Red Mi",
+              Type: "Mobile",
+              Price: 2500
+            });
+            console.log("add aayi");
+          } catch (error) {
+            console.log("add aayilla");
+          }
+               
+
+      }}>Add Data</button>
+
+
+
+      <button onClick={async()=>{
+
+         await deleteDoc(doc(db, "products", "Hzldnp6fRzsOVrulnNUR"));
+
+
+
+      }}>Delete Data</button>
+
+
     </div>
   );
 }
